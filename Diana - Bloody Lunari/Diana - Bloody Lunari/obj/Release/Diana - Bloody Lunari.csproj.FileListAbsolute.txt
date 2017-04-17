@@ -1,0 +1,10 @@
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\Diana - Bloody Lunari.exe.config
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\Diana - Bloody Lunari.exe
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\Diana - Bloody Lunari.pdb
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\EloBuddy.dll
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\EloBuddy.SDK.dll
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\SharpDX.dll
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\bin\Release\Newtonsoft.Json.dll
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\obj\Release\Diana - Bloody Lunari.exe
+C:\Users\Radosław\Documents\Visual Studio 2015\Projects\Diana - Bloody Lunari\Diana - Bloody Lunari\obj\Release\Diana - Bloody Lunari.pdb
