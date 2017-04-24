@@ -1,0 +1,11 @@
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\Evelynn - Bloody Shadow.exe.config
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\Evelynn - Bloody Shadow.exe
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\Evelynn - Bloody Shadow.pdb
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\EloBuddy.dll
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\EloBuddy.SDK.dll
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\SharpDX.dll
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\SharpDX.Direct3D9.dll
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\bin\Debug\Newtonsoft.Json.dll
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\obj\Debug\Evelynn - Bloody Shadow.csprojResolveAssemblyReference.cache
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\obj\Debug\Evelynn - Bloody Shadow.exe
+c:\users\radosław\documents\visual studio 2015\Projects\Evelynn - Bloody Shadow\Evelynn - Bloody Shadow\obj\Debug\Evelynn - Bloody Shadow.pdb
