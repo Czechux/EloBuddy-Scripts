@@ -1,0 +1,8 @@
+# hide these folders
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+
+# Windows Installer files
+*.sln
