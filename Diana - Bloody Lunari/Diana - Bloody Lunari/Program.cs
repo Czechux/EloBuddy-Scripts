@@ -82,8 +82,9 @@ namespace Diana___Bloody_Lunari
 
             ComboMenu.AddSeparator(0);
             ComboMenu.AddLabel("R Spell Settings - tick only one option");
-            ComboMenu.Add("RONLY", new CheckBox("Use [R] (only when target got Q mark)"));
-            ComboMenu.Add("RNO", new CheckBox("Use [R] (always) ", false));
+            ComboMenu.Add("Combos", new ComboBox("Use R", 0, "Only with Q Mark", "Always"));
+         //   ComboMenu.Add("RONLY", new CheckBox("Use [R] (only when target got Q mark)"));
+           // ComboMenu.Add("RNO", new CheckBox("Use [R] (always) ", false));
 
             HarrasMenu.AddGroupLabel("Harras Settings");
 
@@ -336,6 +337,8 @@ namespace Diana___Bloody_Lunari
 
         private static void Combo()
         {
+            var RQ = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 0;
+            var RA = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 1;
             var target = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
             if (target == null)
             {
@@ -344,6 +347,7 @@ namespace Diana___Bloody_Lunari
             if (ComboMenu["UseQ"].Cast<CheckBox>().CurrentValue)
             {
                 var Qpred = _Q.GetPrediction(target);
+                var wheretocastt = _Player.Position.Extend(Player.Instance, Qpred.CastPosition.Distance(Player.Instance) + 200).To3DWorld();
                 if (Qpred.HitChance >= HitChance.Impossible && target.IsValidTarget(_Q.Range))
                 {
                     if (!target.IsInRange(_Player, _Q.Range) && _Q.IsReady())
@@ -352,11 +356,11 @@ namespace Diana___Bloody_Lunari
                     }
                 }
                 {
-                    _Q.Cast(target);
+                    _Q.CastStartToEnd(wheretocastt, Qpred.CastPosition);
                 }
             }
 
-            if (ComboMenu["UseR"].Cast<CheckBox>().CurrentValue && ComboMenu["RONLY"].Cast<CheckBox>().CurrentValue)
+            if (ComboMenu["UseR"].Cast<CheckBox>().CurrentValue && RQ)
             {
                 if (target.HasBuff("DianaMoonlight") && target.IsInRange(_Player, _R.Range))
                 {
@@ -364,7 +368,7 @@ namespace Diana___Bloody_Lunari
                 }
             }
 
-            if (ComboMenu["RNO"].Cast<CheckBox>().CurrentValue && ComboMenu["UseR"].Cast<CheckBox>().CurrentValue)
+            if (RA && ComboMenu["UseR"].Cast<CheckBox>().CurrentValue)
             {
                 if (target.IsInRange(_Player, _R.Range) && target.IsValidTarget() && _R.IsReady())
                 {
