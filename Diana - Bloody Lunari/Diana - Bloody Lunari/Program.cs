@@ -20,6 +20,8 @@ namespace Diana___Bloody_Lunari
         public static Spell.Active _E;
         public static Spell.Targeted _R;
         public static Spell.Targeted _Ignite;
+        private static Spell.Targeted _RM;
+
         private static AIHeroClient _Player
         {
             get { return ObjectManager.Player; }
@@ -36,9 +38,8 @@ namespace Diana___Bloody_Lunari
                 return;
             }
 
-            Chat.Print("Diana - Bloody Lunari Loaded!"); /*Color.Crimson);*/
-            Chat.Print("By Horizon & Radi"); /*Color.OrangeRed);*/
-            Chat.Print("Good luck and have fun, summoner."); /*Color.DarkViolet);*/
+            Chat.Print("Diana - Bloody Lunari Loaded!", System.Drawing.Color.Crimson); /*Color.Crimson);*/
+            Chat.Print("Good luck and have fun, summoner.", System.Drawing.Color.DarkViolet); /*Color.DarkViolet);*/
 
             _Q = new Spell.Skillshot(SpellSlot.Q, 900, SkillShotType.Circular, 250, 1400, 50);
             _W = new Spell.Active(SpellSlot.W, 200);
@@ -79,12 +80,15 @@ namespace Diana___Bloody_Lunari
             ComboMenu.AddSeparator(0);
             ComboMenu.AddLabel("R Spell Settings");
             ComboMenu.Add("UseR", new CheckBox("Use [R] on Combo"));
+            ComboMenu.AddSeparator(1);
+            ComboMenu.Add("CR", new CheckBox("Use Second Ult in combo if enemy is killable"));
+            ComboMenu.Add("Misaya", new KeyBind("Use Misaya Combo (R->Q->R)", false, KeyBind.BindTypes.HoldActive, 'T'));
 
             ComboMenu.AddSeparator(0);
             ComboMenu.AddLabel("R Spell Settings - tick only one option");
             ComboMenu.Add("Combos", new ComboBox("Use R", 0, "Only with Q Mark", "Always"));
-         //   ComboMenu.Add("RONLY", new CheckBox("Use [R] (only when target got Q mark)"));
-           // ComboMenu.Add("RNO", new CheckBox("Use [R] (always) ", false));
+            //   ComboMenu.Add("RONLY", new CheckBox("Use [R] (only when target got Q mark)"));
+            // ComboMenu.Add("RNO", new CheckBox("Use [R] (always) ", false));
 
             HarrasMenu.AddGroupLabel("Harras Settings");
 
@@ -172,6 +176,8 @@ namespace Diana___Bloody_Lunari
             DrawingsMenu.Add("DE", new CheckBox("- Draw [E] range"));
             DrawingsMenu.AddSeparator(0);
             DrawingsMenu.Add("DR", new CheckBox("- Draw [R] range"));
+            DrawingsMenu.AddSeparator(0);
+            DrawingsMenu.Add("DM", new CheckBox("- Draw [R] Mode"));
 
 
             Game.OnUpdate += Game_OnUpdate;
@@ -204,38 +210,122 @@ namespace Diana___Bloody_Lunari
             {
                 LastHit();
             }
-
             AHarra();
             KillSteal();
             Activator();
             AntiSpell();
+            if (ComboMenu["Misaya"].Cast<KeyBind>().CurrentValue)
+            {
+                Misaya();
+            }
+
         }
 
         private static void Game_OnTick(EventArgs args)
         {
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        public static void Misaya()
         {
-            var target = TargetSelector.GetTarget(_Q.Range, DamageType.Physical);
-            if (DrawingsMenu["DQ"].Cast<CheckBox>().CurrentValue && _Q.IsLearned)
+            var UR = ComboMenu["UseR"].Cast<CheckBox>().CurrentValue;
+            var UQ = ComboMenu["UseQ"].Cast<CheckBox>().CurrentValue;
+            var targetR = TargetSelector.GetTarget(_R.Range, DamageType.Physical);
+            var targetQ = TargetSelector.GetTarget(_Q.Range, DamageType.Physical);
+            if (targetR == null)
             {
-                Circle.Draw(_Q.IsReady() ? White : Red, _Q.Range, _Player);
+                return;
             }
-            if (DrawingsMenu["DW"].Cast<CheckBox>().CurrentValue && _W.IsLearned)
+            if (targetQ == null)
             {
-                Circle.Draw(_W.IsReady() ? White : Red, _W.Range, _Player);
+                return;
             }
-            if (DrawingsMenu["DE"].Cast<CheckBox>().CurrentValue && _E.IsLearned)
+            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+            var rDelay = _R.CastDelay = 500;
+            if (UR && UQ)
             {
-                Circle.Draw(_E.IsReady() ? White : Red, _E.Range, _Player);
-            }
-            if (DrawingsMenu["DR"].Cast<CheckBox>().CurrentValue && _R.IsLearned)
-            {
-                Circle.Draw(_R.IsReady() ? White : Red, _R.Range, _Player);
+                if (targetQ.IsInRange(_Player, _Q.Range) && targetQ.IsValidTarget() && _Q.IsReady())
+                {
+                    _Q.Cast(targetQ.ServerPosition);
+                }
+                if (targetR.IsInRange(_Player, _R.Range) && targetR.IsValidTarget() && _R.IsReady() && !_Q.IsOnCooldown)
+                {
+                    _R.Cast(targetR);
+                }
+                if (targetR.IsInRange(_Player, _R.Range) && targetR.IsValidTarget() && _R.IsReady())
+                {
+                    _R.Cast(targetR);
+                }
+
             }
         }
 
+
+        private static void Drawing_OnDraw(EventArgs args)
+        {
+            var RQ = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 0;
+            var RA = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 1;
+            var DM = DrawingsMenu["DM"].Cast<CheckBox>().CurrentValue;
+            var target = TargetSelector.GetTarget(_Q.Range, DamageType.Physical);
+            if (DrawingsMenu["DQ"].Cast<CheckBox>().CurrentValue && _Q.IsLearned)
+                
+            {
+                if (!_Q.IsReady())
+                    Circle.Draw(Red, _Q.Range, _Player);
+
+                else if (_Q.IsReady())
+                {
+                    Circle.Draw(Cyan, _Q.Range, _Player);
+                }
+
+
+            }
+            if (DrawingsMenu["DW"].Cast<CheckBox>().CurrentValue && _W.IsLearned)
+            {
+                if (!_W.IsReady())
+                    Circle.Draw(Red, _W.Range, _Player);
+
+                else if (_W.IsReady())
+                {
+                    Circle.Draw(Cyan, _W.Range, _Player);
+                }
+            }
+            if (DrawingsMenu["DE"].Cast<CheckBox>().CurrentValue && _E.IsLearned)
+            {
+                if (!_E.IsReady())
+                    Circle.Draw(Red, _E.Range, _Player);
+
+                else if (_E.IsReady())
+                {
+                    Circle.Draw(Red, _E.Range, _Player);
+                }
+            }
+            if (DrawingsMenu["DR"].Cast<CheckBox>().CurrentValue && _R.IsLearned)
+            {
+                if (!_R.IsReady())
+                    Circle.Draw(Red, _R.Range, _Player);
+
+                else if (_R.IsReady())
+                {
+                    Circle.Draw(Cyan, _R.Range, _Player);
+                }
+            }
+
+            if (RQ && DM)
+            {
+                Drawing.DrawText(Drawing.WorldToScreen(_Player.Position).X - 50,
+                Drawing.WorldToScreen(_Player.Position).Y + 10,
+                System.Drawing.Color.White,
+                "     R Mode: Mark ");
+
+            }
+            if (RA && DM)
+            {
+                Drawing.DrawText(Drawing.WorldToScreen(_Player.Position).X - 50,
+                 Drawing.WorldToScreen(_Player.Position).Y + 10,
+                 System.Drawing.Color.White,
+                 "     R Mode: Always ");
+            }
+        }
         public static void AHarra()
         {
             var target = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
@@ -243,6 +333,7 @@ namespace Diana___Bloody_Lunari
             {
                 return;
             }
+
             {
                 if (_Player.ManaPercent > AHarrasM["AHQM"].Cast<Slider>().CurrentValue &&
                     AHarrasM["AHQ"].Cast<CheckBox>().CurrentValue && AHarrasM["QAO"].Cast<CheckBox>().CurrentValue)
@@ -267,27 +358,22 @@ namespace Diana___Bloody_Lunari
             {
                 if (AntiSpellMenu["ASLux"].Cast<CheckBox>().CurrentValue)
                 {
-                    if (!_Player.HasBuff("LuxLightBindingMis"))
+                    if (_Player.HasBuff("LuxLightBindingMis"))
+
+
                     {
-                        return;
+                        _W.Cast();
                     }
                 }
-                {
-                    _W.Cast();
-                }
             }
-
-            if (ManaAutoS < _Player.ManaPercent && _W.IsReady())
+            else if (ManaAutoS < _Player.ManaPercent && _W.IsReady())
             {
                 if (AntiSpellMenu["ASMorgana"].Cast<CheckBox>().CurrentValue)
                 {
-                    if (!_Player.HasBuff("Dark Binding"))
+                    if (_Player.HasBuff("Dark Binding"))
                     {
-                        return;
+                        _W.Cast();
                     }
-                }
-                {
-                    _W.Cast();
                 }
             }
         }
@@ -300,7 +386,7 @@ namespace Diana___Bloody_Lunari
                 {
                     return;
                 }
-                _Q.CastOnBestFarmPosition(3, 50);
+                _Q.CastOnBestFarmPosition(2, 50);
             }
 
             if (_Player.ManaPercent > LCMenu["LCWM"].Cast<Slider>().CurrentValue && LCMenu["LCW"].Cast<CheckBox>().CurrentValue)
@@ -334,20 +420,25 @@ namespace Diana___Bloody_Lunari
                 _W.Cast();
             }
         }
-
         private static void Combo()
         {
             var RQ = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 0;
             var RA = ComboMenu["Combos"].Cast<ComboBox>().SelectedIndex == 1;
+            var CR = ComboMenu["CR"].Cast<CheckBox>().CurrentValue;
             var target = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
+            var targetR = TargetSelector.GetTarget(_R.Range, DamageType.Magical);
             if (target == null)
+            {
+                return;
+            }
+            if (targetR == null)
             {
                 return;
             }
             if (ComboMenu["UseQ"].Cast<CheckBox>().CurrentValue)
             {
                 var Qpred = _Q.GetPrediction(target);
-                var wheretocastt = _Player.Position.Extend(Player.Instance, Qpred.CastPosition.Distance(Player.Instance) + 200).To3DWorld();
+                var wheretocastt = _Player.Position.Extend(Player.Instance, Qpred.CastPosition.Distance(Player.Instance) + 125).To3DWorld();
                 if (Qpred.HitChance >= HitChance.Impossible && target.IsValidTarget(_Q.Range))
                 {
                     if (!target.IsInRange(_Player, _Q.Range) && _Q.IsReady())
@@ -394,14 +485,15 @@ namespace Diana___Bloody_Lunari
                 }
             }
 
-            if (ComboMenu["UseR"].Cast<CheckBox>().CurrentValue)
+            if (ComboMenu["UseR"].Cast<CheckBox>().CurrentValue && CR)
             {
-                if (_Q.IsOnCooldown && target.IsInRange(_Player, _R.Range) && _R.IsReady() && target.HealthPercent < 15)
+                if (target.IsInRange(_Player, _R.Range) && _R.IsReady() && targetR.Health + targetR.AttackShield < _Player.GetSpellDamage(targetR, SpellSlot.R))
                 {
-                    _R.Cast(target);
+                    _R.Cast(targetR);
                 }
             }
         }
+
 
         private static void LastHit()
         {
