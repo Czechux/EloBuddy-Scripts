@@ -339,7 +339,7 @@ namespace Diana___Bloody_Lunari
                     AHarrasM["AHQ"].Cast<CheckBox>().CurrentValue && AHarrasM["QAO"].Cast<CheckBox>().CurrentValue)
                 {
                     var Qpred = _Q.GetPrediction(target);
-                    if (Qpred.HitChance >= HitChance.Impossible && target.IsValidTarget(_Q.Range))
+                    if (Qpred.HitChance >= HitChance.High && target.IsValidTarget(_Q.Range))
                     {
                         if (target.IsInRange(_Player, _Q.Range) && _Q.IsReady())
                         {
@@ -439,7 +439,7 @@ namespace Diana___Bloody_Lunari
             {
                 var Qpred = _Q.GetPrediction(target);
                 var wheretocastt = _Player.Position.Extend(Player.Instance, Qpred.CastPosition.Distance(Player.Instance) + 125).To3DWorld();
-                if (Qpred.HitChance >= HitChance.Impossible && target.IsValidTarget(_Q.Range))
+                if (Qpred.HitChance >= HitChance.High && target.IsValidTarget(_Q.Range))
                 {
                     if (!target.IsInRange(_Player, _Q.Range) && _Q.IsReady())
                     {
@@ -597,7 +597,7 @@ namespace Diana___Bloody_Lunari
             if (KSMenu["KSQ"].Cast<CheckBox>().CurrentValue)
             {
                 var Qpred = _Q.GetPrediction(targetQ);
-                if (Qpred.HitChance >= HitChance.Impossible && targetQ.IsValidTarget(_Q.Range))
+                if (Qpred.HitChance >= HitChance.High && targetQ.IsValidTarget(_Q.Range))
                 {
                     if (targetQ.Health + targetQ.AttackShield < _Player.GetSpellDamage(targetQ, SpellSlot.Q))
                     {
