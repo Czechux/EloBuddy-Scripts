@@ -13,7 +13,9 @@ using static SharpDX.Color;
 namespace Diana___Bloody_Lunari
 {
     internal class Program
+
     {
+     //   private static Menu HorizonU, ActivatorM;
         private static Menu StartMenu, ComboMenu, DrawingsMenu, AHarrasM, ActivatorMenu, HarrasMenu, LCMenu, AntiSpellMenu, LastHitM, KSMenu;
         public static Spell.Skillshot _Q;
         public static Spell.Active _W;
@@ -21,6 +23,7 @@ namespace Diana___Bloody_Lunari
         public static Spell.Targeted _R;
         public static Spell.Targeted _Ignite;
         private static Spell.Targeted _RM;
+
 
         private static AIHeroClient _Player
         {
@@ -41,12 +44,12 @@ namespace Diana___Bloody_Lunari
             Chat.Print("Diana - Bloody Lunari Loaded!", System.Drawing.Color.Crimson); /*Color.Crimson);*/
             Chat.Print("Good luck and have fun, summoner.", System.Drawing.Color.DarkViolet); /*Color.DarkViolet);*/
 
-            _Q = new Spell.Skillshot(SpellSlot.Q, 900, SkillShotType.Circular, 250, 1400, 50);
+            _Q = new Spell.Skillshot(SpellSlot.Q, 900, SkillShotType.Circular, 250, 1400, 200);
             _W = new Spell.Active(SpellSlot.W, 200);
             _E = new Spell.Active(SpellSlot.E, 450);
             _R = new Spell.Targeted(SpellSlot.R, 825);
             _Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
-
+            //Diana 
             StartMenu = MainMenu.AddMenu("Diana", "Diana");
             ComboMenu = StartMenu.AddSubMenu("Combo Settings", "Combo Settings");
             HarrasMenu = StartMenu.AddSubMenu("Harras Settings", "Harras Settings");
@@ -58,11 +61,25 @@ namespace Diana___Bloody_Lunari
             ActivatorMenu = StartMenu.AddSubMenu("Activator Settings", "Activator Settings");
             DrawingsMenu = StartMenu.AddSubMenu("Drawings Settings", "Drawings Settings");
 
+            // Horizon Utility
+      //      HorizonU = MainMenu.AddMenu("Horizon Utility", "Horizon Utility");
+       //     ActivatorM = HorizonU.AddSubMenu("Activator", "Activator");
+
+
+            ActivatorMenu.AddGroupLabel("Activator Settings");
+            ActivatorMenu.AddLabel("Use Summoner Spell");
+            ActivatorMenu.Add("IGNI", new CheckBox("- Use Ignite if enemy is killable"));
+
+
+
             StartMenu.AddGroupLabel("Diana - Bloody Lunari");
             StartMenu.AddSeparator(2);
             StartMenu.AddGroupLabel("Made By");
             StartMenu.AddLabel("- Horizon");
             StartMenu.AddLabel("- Radi");
+
+           // HorizonU.AddLabel("Welcomy to Utlility Beta made by Horizon!");
+
 
             ComboMenu.AddGroupLabel("Combo Settings");
 
@@ -559,23 +576,7 @@ namespace Diana___Bloody_Lunari
             }
         }
 
-        public static void Activator()
-        {
-            var target = TargetSelector.GetTarget(_Ignite.Range, DamageType.True);
-            if (target == null)
-            {
-                return;
-            }
-            if (ActivatorMenu["IGNI"].Cast<CheckBox>().CurrentValue && _Ignite.IsReady() && target.IsValidTarget())
 
-            {
-                if (target.Health + target.AttackShield <
-                    _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
-                {
-                    _Ignite.Cast(target);
-                }
-            }
-        }
 
         public static void KillSteal()
         {
@@ -635,6 +636,30 @@ namespace Diana___Bloody_Lunari
                 }
                 {
                     _R.Cast(targetR);
+                }
+            }
+
+
+
+
+        }
+        // end region of Diana
+
+        //Utility region
+        public static void Activator()
+        {
+            var target = TargetSelector.GetTarget(_Ignite.Range, DamageType.True);
+            if (target == null)
+            {
+                return;
+            }
+            if (ActivatorMenu["IGNI"].Cast<CheckBox>().CurrentValue && _Ignite.IsReady() && target.IsValidTarget())
+
+            {
+                if (target.Health + target.AttackShield <
+                    _Player.GetSummonerSpellDamage(target, DamageLibrary.SummonerSpells.Ignite))
+                {
+                    _Ignite.Cast(target);
                 }
             }
         }
