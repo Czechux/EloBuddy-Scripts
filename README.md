@@ -1,12 +1,11 @@
 # EloBuddy-Scripts
 Scripts for EloBuddy in C#
-1. Cassiopeia (never updated with new geometry)
+1. Cassiopeia
 2. Diana
 3. Evelynn
 4. Leona
 5. Sona
-6. Shyvana (never released)
+6. Shyvana
 
-# Old projects for League of Legends scripting platform
+# Old projects 
 
-Authors : Radi; Horizon(aka Chooca)
